@@ -2,6 +2,7 @@
 #include<fstream>
 #include<string>
 #include<sstream>
+
 using namespace std;
 
 struct studentData {
@@ -52,7 +53,7 @@ void printList(const studentData students[], int length) {
 
 int main(int argc, char * argv[]) {
     // if (argc != 5) {
-    //     cout << "error, invalid number of inputs";
+    //     cout << "error, invalid number of inputs" << endl << "format:" << endl << "<program> <input file> <output file> <lower bound> <upper bound>" << endl;
     //     return 1;
     // }
 
@@ -72,28 +73,20 @@ int main(int argc, char * argv[]) {
     int exam;
     while(getline(inFile,inVal)) {
         stringstream tmp(inVal);
-        for (int i = 0; i < 5; i++) {
-            getline(tmp,inVal,',');
-            switch(i) {
-                case 0:
-                    studentName = inVal;
-                    break;
-                case 1:
-                    homework = stoi(inVal);
-                    break;
-                case 2:
-                    recitation = stoi(inVal);
-                    break;
-                case 3:
-                    quiz = stoi(inVal);
-                    break;
-                case 4:
-                    exam =  stoi(inVal);
-                    break;
-            }
-        }
+
+        getline(tmp,studentName,',');
+        getline(tmp,inVal,',');
+        homework = stoi(inVal);
+        getline(tmp,inVal,',');
+        recitation = stoi(inVal);
+        getline(tmp,inVal,',');
+        quiz = stoi(inVal);
+        getline(tmp,inVal,',');
+        exam =  stoi(inVal);
+        
         addStudentData(students, studentName, homework, recitation, quiz, exam, length);
         length++;
     } 
+    inFile.close();
     printList(students, length);
 }

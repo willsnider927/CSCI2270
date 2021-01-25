@@ -40,6 +40,7 @@ int main(int argc, char * argv[]) {
         }
         cout << endl << endl;
     }
+    myFile.close();
     return 0;
 }
 
