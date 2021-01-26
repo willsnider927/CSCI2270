@@ -9,20 +9,19 @@ int addToArrayAsc(float sortedArray[], int numElements, float newValue);
 int main(int argc, char * argv[]) {
     if (argc != 2) {
         cout << "error, incorrect input" << endl;
-        return 1;
+        return 0;
     }
     
     ifstream myFile(argv[1]); // opening file
     if (!myFile) {
-        cout << "file not opened, check your arguments" << endl;
-        return 1;
+        cout << "Failed to open the file." << endl;
+        return 0;
     }
     float sortedArray[100];
     int numElements = 0;
 
     string inVal;
-    while (myFile) {
-        getline(myFile,inVal); 
+    while (getline(myFile,inVal)) {
         float newValue = stof(inVal); // read line and convert to float
         if (numElements == 0) {
             sortedArray[0] = newValue; // if blank, adds first value
@@ -36,12 +35,13 @@ int main(int argc, char * argv[]) {
             numElements = addToArrayAsc(sortedArray,numElements,newValue);
         }
         for (int i = 0; i < numElements; i++) {
-            cout << sortedArray[i] << ", ";
+            if (i == numElements -1 ) cout << sortedArray[i];
+            else cout << sortedArray[i] << ",";
         }
-        cout << endl << endl;
+        cout << endl;
     }
     myFile.close();
-    return 0;
+    return 1;
 }
 
 int addToArrayAsc(float sortedArray[], int numElements, float newValue) {

@@ -19,6 +19,8 @@ int exam, int length);
 
 char calcLetter(double avg);
 
+int calcGradeBnds(char lower, char upper, int bounds[]);
+
 void printList(const studentData students[], int length);
 
 void addStudentData(studentData students[], string studentName, int homework, int recitation, int quiz, 
@@ -29,7 +31,7 @@ int exam, int length) {
     studentStruct.recitation = recitation;
     studentStruct.quiz = quiz;
     studentStruct.exam = exam;
-    studentStruct.average = (homework + recitation + quiz + exam)/4;
+    studentStruct.average = (float)(homework + recitation + quiz + exam)/4;
     students[length] = studentStruct;
 }
 
@@ -44,6 +46,24 @@ char calcLetter(double avg) {
     return letter;
 }
 
+int calcGradeBnds(char lower, char upper, int bounds[]) {
+    if (lower == 'A') bounds[0] = 90;
+    else if (lower == 'B') bounds[0] = 80;
+    else if (lower == 'C') bounds[0] = 70;
+    else if (lower == 'D') bounds[0] = 60;
+    else if (lower == 'F') bounds[0] = 0;
+    else return 1;
+
+    if (upper == 'A') bounds[1] = 100;
+    else if (upper == 'B') bounds[1] = 89.9;
+    else if (upper == 'C') bounds[1] = 79.9;
+    else if (upper == 'D') bounds[1] = 69.9;
+    else if (upper == 'F') bounds[1] = 59.9;
+    else return 1;
+
+    return 0;
+}
+
 void printList(const studentData students[], int length) {
     for (int i = 0; i < length; i++) {
         cout << students[i].studentName << " earned " << students[i].average << " which is a(n) " 
@@ -52,15 +72,20 @@ void printList(const studentData students[], int length) {
 }
 
 int main(int argc, char * argv[]) {
-    // if (argc != 5) {
-    //     cout << "error, invalid number of inputs" << endl << "format:" << endl << "<program> <input file> <output file> <lower bound> <upper bound>" << endl;
-    //     return 1;
-    // }
+     if (argc != 5) {
+         cout << "error, invalid number of inputs" << endl << "format:" << endl << "<program> <input file> <output file> <lower bound> <upper bound>" << endl;
+         return 0;
+     }
 
     ifstream inFile(argv[1]);
+    ofstream outFile(argv[2]);
     if (!inFile) {
-        cout << "file not opened, check your arguments" << endl;
-        return 1;
+        cout << "input file not opened, check your arguments" << endl;
+        return 0;
+    }
+    if (!outFile) {
+        cout << "output file not opened, check your arguments" << endl;
+        return 0;
     }
 
     studentData students[10];
@@ -89,4 +114,21 @@ int main(int argc, char * argv[]) {
     } 
     inFile.close();
     printList(students, length);
+
+    bool check;
+    int bounds[2];
+    check = calcGradeBnds(*argv[3], *argv[4], bounds);
+    if (check) {
+        cout << "error, invalid grade bounds, check args" << endl;
+        return 0;
+    }
+
+    for (int i = 0; i < length; i++) {
+        if ((students[i].average >= bounds[0]) && (students[i].average <= bounds[1])) {
+            char letterGrade = calcLetter(students[i].average);
+            outFile << students[i].studentName << ',' << students[i].average << ',' << letterGrade << endl;
+        }
+    }
+    outFile.close();
+    return 1;
 }
