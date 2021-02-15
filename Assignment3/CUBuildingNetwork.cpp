@@ -41,7 +41,22 @@ bool CUBuildingNetwork::isEmpty()
  * @return none
  */
 void CUBuildingNetwork::addBuildingInfo(CUBuilding* previous, string buildingName, int numOfroom) {
+    CUBuilding* building = new CUBuilding;
+    building->name = buildingName;
+    building->next = 0;
+    building->totalRoom = numOfroom;
+    building->numberMessages = 0;
 
+    if (previous == 0) {
+        building->next = head;
+        head = building;
+        cout << "adding: " << buildingName << " (HEAD)" << endl;
+    }
+    else {
+        building->next = previous->next;
+        previous->next = building;
+        cout << "adding: " << buildingName << " (prev: " << previous->name << ")"<< endl;
+    }
 }
 
 
@@ -52,7 +67,12 @@ void CUBuildingNetwork::addBuildingInfo(CUBuilding* previous, string buildingNam
  */
 void CUBuildingNetwork::loadDefaultSetup()
 {
-
+    addBuildingInfo(head, "FLMG", 2);
+    addBuildingInfo(searchForBuilding("FLMG"), "DLC", 10);
+    addBuildingInfo(searchForBuilding("DLC"), "ECOT", 6);
+    addBuildingInfo(searchForBuilding("ECOT"), "CASE", 5);
+    addBuildingInfo(searchForBuilding("CASE"), "AERO", 4);
+    addBuildingInfo(searchForBuilding("AERO"), "RGNT", 9);
 }
 
 /*
@@ -63,7 +83,14 @@ void CUBuildingNetwork::loadDefaultSetup()
  */
 CUBuilding* CUBuildingNetwork::searchForBuilding(string buildingName)
 {
-
+    CUBuilding* curr = head;
+    while(curr != NULL) {
+        if (curr->name == buildingName) {
+            return curr;
+        }
+        curr = curr->next;
+    }
+    return NULL;
 }
 
 
@@ -73,7 +100,25 @@ CUBuilding* CUBuildingNetwork::searchForBuilding(string buildingName)
  * @param string msg
  */
 void CUBuildingNetwork::transmitRoomInfo(string receiver) {
-
+    if (head == NULL) {
+        cout << "Empty list" << endl;
+        return;
+    }
+    CUBuilding* final = searchForBuilding(receiver);
+    if (final == NULL) {
+        cout << "Building not found" << endl;
+        return;
+    }    
+    CUBuilding* curr = head;
+    while (curr != NULL) {
+        curr->message = "available room at " + curr->name + " is " + to_string(curr->totalRoom);
+        curr->numberMessages++;
+        cout << curr->name << " [# messages received: " << curr->numberMessages <<"] received: " << curr->message << endl;
+        if (curr == final) {
+            return;
+        }
+        curr = curr->next;
+    }
 }
 
 /*
@@ -81,5 +126,15 @@ void CUBuildingNetwork::transmitRoomInfo(string receiver) {
  * @param ptr head of list
  */
 void CUBuildingNetwork::printNetwork() {
-    
+    CUBuilding* curr = head;
+    cout << "== CURRENT PATH ==" << endl;
+    if (head == NULL) {
+        cout << "nothing in path" << endl << "===" << endl;
+        return;
+    }
+    while (curr != NULL) {
+        cout << curr->name << "(" << curr->totalRoom << ") -> ";
+        curr = curr->next;
+    }
+    cout << "NULL" << endl << "===" << endl;
   }

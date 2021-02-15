@@ -8,10 +8,9 @@ using namespace std;
 bool append(string* &str_arr, string s, int &numEntries, int &arraySize);
 
 bool append(string* &str_arr, string s, int &numEntries, int &arraySize) {
-    if (numEntries >= arraySize) {
-        cout << "Doubling array" << endl;
+    if (numEntries >= arraySize) { //if needing double
         string* temp = new string[arraySize*2];
-        for (int i = 9; i < arraySize; i++) {
+        for (int i = 0; i < arraySize; i++) {
             temp[i] = str_arr[i];
         }
         delete[] str_arr;
@@ -21,7 +20,7 @@ bool append(string* &str_arr, string s, int &numEntries, int &arraySize) {
         numEntries += 1;
         return 1;
     }
-    else {
+    else { //if not needing double
         str_arr[numEntries] = s;
         numEntries += 1;
         return 0;
