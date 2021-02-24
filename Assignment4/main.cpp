@@ -135,7 +135,7 @@ void handleUserInput(CUBuildingNetwork& CUBuildingNet)
                 } else {
                     cout << "Network does not contain a loop" << endl;
                 }
-
+                
                 break;
             }
 
