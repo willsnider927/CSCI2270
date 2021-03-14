@@ -9,6 +9,8 @@
         "xstring": "cpp",
         "fstream": "cpp",
         "utility": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "xiosbase": "cpp",
+        "ios": "cpp"
     }
 }
