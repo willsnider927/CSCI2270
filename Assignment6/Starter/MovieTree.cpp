@@ -106,7 +106,7 @@ void MovieTree::queryMovies(float rating, int year) {
     cout << "Tree is Empty. Cannot query Movies." << endl;
     return;
   }
-  cout << "Movies that came out after " << year << "with rating at least " << rating << ":" <<endl;
+  cout << "Movies that came out after " << year << " with rating at least " << rating << ":" <<endl;
   _queryMovies(root, rating, year);
 }
 
@@ -122,15 +122,19 @@ int _total(MovieNode* location) {
 
 void MovieTree::averageRating() {
   //write your code
+  if (!root) {
+    cout << "Average rating:0.0" << endl;
+    return; 
+  }
   float average = _sum(root)/(float)_total(root);
-  cout << "Average Rating:" << average << endl;
+  cout << "Average rating:" << average << endl;
 }
 
 void _printLevelNodes(MovieNode* location, int level) {
   if (location) { //if NULL, nothing happens
     _printLevelNodes(location->left, level - 1); //left first so that it prints correct order
     if (!level) { // check if at correct level
-      cout << "Movie:" << location->title << " (" << location->rating << ")" << endl; 
+      cout << "Movie: " << location->title << " (" << location->rating << ")" << endl; 
     }
     _printLevelNodes(location->right, level - 1); //now do the right
   }

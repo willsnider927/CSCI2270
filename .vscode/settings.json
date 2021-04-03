@@ -11,6 +11,8 @@
         "utility": "cpp",
         "string": "cpp",
         "xiosbase": "cpp",
-        "ios": "cpp"
+        "ios": "cpp",
+        "xtr1common": "cpp",
+        "xutility": "cpp"
     }
 }
