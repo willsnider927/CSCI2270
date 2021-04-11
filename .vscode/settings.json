@@ -13,6 +13,8 @@
         "xiosbase": "cpp",
         "ios": "cpp",
         "xtr1common": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "vector": "cpp",
+        "queue": "cpp"
     }
 }
